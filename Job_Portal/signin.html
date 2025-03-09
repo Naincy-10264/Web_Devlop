@@ -37,9 +37,16 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        .form-control {
+            min-width: 500px; /* Increase the width */
+            max-width: 100%;  /* Ensure responsiveness */
+        }
         @media (max-width: 768px) {
             .signup-container {
                 width: 90%;
+            }
+            .form-control {
+                min-width: 100%; /* Adjust for mobile */
             }
         }
     </style>
