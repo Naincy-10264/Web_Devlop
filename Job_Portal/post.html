@@ -21,7 +21,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            background-color: #fff;
+            background-color: #afa8a8;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
@@ -70,6 +70,10 @@
             border: 3px solid rgb(197, 215, 197);
             padding: 10px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -97,7 +101,7 @@
                             <input class="form-check-input" type="checkbox" id="jobCheckbox">
                             <label class="clickable-label" for="jobCheckbox">
                                 <img src="https://img.icons8.com/?size=160&id=D7Cn9uiMoXdY&format=png" width="20px" height="20px" class="me-2">
-                                Jobs
+                                Job
                             </label>
                         </div>
                         <div>
@@ -130,35 +134,15 @@
                     </div>
                 </div>
 
-                <div class="mb-3 mt-3">
+                <!-- Location Field -->
+                <div class="mb-3 mt-3 hidden" id="locationContainer">
                     <label for="location" class="form-label">Location:</label>
-                    <input type="text" class="form-control" id="location" name="location" required>
+                    <input type="text" class="form-control" id="location" name="location">
                 </div>
 
                 <div class="mb-3">
                     <label for="skills" class="form-label">Skills Required:</label>
                     <input type="text" class="form-control" id="skills" name="skills" required>
-                </div>
-
-                <div class="borderline">
-                    <label class="form-label">Eligibility:</label>
-                    <div class="borderline">
-                        <p>Experience required (in years)</p>
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input class="form-check-input" type="checkbox" id="fresherCheckbox">
-                                <label class="clickable-label" for="fresherCheckbox">
-                                    Fresher
-                                </label>
-                            </div>
-                            <div>
-                                <input class="form-check-input" type="checkbox" id="experiencedCheckbox">
-                                <label class="clickable-label" for="experiencedCheckbox">
-                                    Experienced
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="mb-3 mt-3">
@@ -175,6 +159,42 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const jobCheckbox = document.getElementById("jobCheckbox");
+            const internshipCheckbox = document.getElementById("internshipCheckbox");
+            const officeCheckbox = document.getElementById("officeCheckbox");
+            const wfhCheckbox = document.getElementById("wfhCheckbox");
+            const locationContainer = document.getElementById("locationContainer");
+        
+            jobCheckbox.addEventListener("change", function () {
+                if (this.checked) {
+                    internshipCheckbox.checked = false; 
+                }
+            });
+        
+            internshipCheckbox.addEventListener("change", function () {
+                if (this.checked) {
+                    jobCheckbox.checked = false; 
+                }
+            });
+        
+            officeCheckbox.addEventListener("change", function () {
+                if (this.checked) {
+                    wfhCheckbox.checked = false; 
+                    locationContainer.classList.remove("hidden"); 
+                }
+            });
+        
+            wfhCheckbox.addEventListener("change", function () {
+                if (this.checked) {
+                    officeCheckbox.checked = false; 
+                    locationContainer.classList.add("hidden"); 
+                }
+            });
+        });        
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
