@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANUFA - E-Commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+        body {
+            background: linear-gradient(135deg, #1b1c1d, #ff5733);
+            color: #fff;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .anufa-highlight {
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: rgb(243, 243, 237);
+            text-shadow: 0 0 15px #dee8eb, 0 0 25px #b3c11f, 0 0 35px #0f9cc3;
+            animation: glow 1.5s infinite alternate ease-in-out;
+            margin-top: 20px;
+            letter-spacing: 5px;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 15px #ffeb3b, 0 0 25px #ffcc00, 0 0 35px #ff9800;
+            }
+            100% {
+                text-shadow: 0 0 25px #ffcc00, 0 0 35px #ff9800, 0 0 45px #ff5733;
+            }
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            padding: 10px 15px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .navbar a:hover {
+            color: #8B0000;
+        }
+
+        /* Homepage Image */
+        .homepage-image {
+            margin-top: 30px;
+        }
+
+        .homepage-image img {
+            width: 80%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(255, 204, 0, 0.7);
+        }
+
+        /* Auth Buttons */
+        .auth-buttons {
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .signup {
+            background: linear-gradient(45deg, #ff5733, #ffcc00);
+            color: #fff;
+            box-shadow: 0px 4px 15px rgba(255, 87, 51, 0.7);
+        }
+
+        .login {
+            background: linear-gradient(45deg, #8B0000, #ff0000);
+            color: #fff;
+            box-shadow: 0px 4px 15px rgba(139, 0, 0, 0.7);
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
+
+        /* Slogan - YOU EXPECT, WE DELIVER */
+        .slogan {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 50px;
+            color: #fff;
+            text-shadow: 0 0 15px #ffcc00, 0 0 25px #ff5733, 0 0 35px #8B0000;
+            animation: pulse 1.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ANUFA Branding -->
+    <div class="anufa-highlight">ANUFA</div>
+
+    <!-- Navigation Links -->
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Homepage Image -->
+    <div class="homepage-image">
+        <img src="images/clothes.jpg" alt="ANUFA Homepage">
+    </div>
+
+    <!-- Auth Buttons -->
+    <div class="auth-buttons">
+        <a href="signup.html" class="btn signup">Sign Up</a>
+        <a href="signin.html" class="btn login">Login</a>
+    </div>
+
+    <!-- Slogan -->
+    <div class="slogan">YOU EXPECT, WE DELIVER</div>
+
+</body>
+</html>

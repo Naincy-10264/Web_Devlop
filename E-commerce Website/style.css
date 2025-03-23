@@ -1,0 +1,91 @@
+/* General Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #000, #222);
+    color: white;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 50px;
+    background: black;
+}
+
+.logo img {
+    width: 100px;
+    border-radius: 10px;
+}
+
+/* Navigation */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    color: yellow;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: orange;
+}
+
+/* Auth Buttons */
+.auth-buttons button {
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+.signup {
+    background: linear-gradient(to right, orange, red);
+}
+
+.login {
+    background: linear-gradient(to right, blue, cyan);
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.hero h1 {
+    font-size: 60px;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 0px 0px 20px rgba(255, 255, 0, 0.8);
+}
+
+/* Categories */
+.categories {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.category {
+    background: #333;
+    padding: 15px 30px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
