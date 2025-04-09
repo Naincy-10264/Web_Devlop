@@ -23,5 +23,14 @@ public class Main {
         for (ProductDAO.Product p : ProductDAO.getAllProducts()) {
             System.out.println("→ " + p);
         }
+
+        CartDAO.addToCart(1, 1, 2);  // 2 Smartphones
+        CartDAO.addToCart(1, 2, 1);  // 1 Jeans
+
+// Display cart items
+        System.out.println("\n🛒 Cart for user ID 1:");
+        for (CartDAO.CartItem item : CartDAO.getCartItems(1)) {
+            System.out.println("→ " + item);
+        }
     }
 }
