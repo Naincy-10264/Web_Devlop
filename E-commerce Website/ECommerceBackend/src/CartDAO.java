@@ -39,7 +39,7 @@ public class CartDAO {
             return true;
 
         } catch (SQLException e) {
-            System.out.println("❌ Failed to add to cart: " + e.getMessage());
+            System.out.println(" Failed to add to cart: " + e.getMessage());
             return false;
         }
     }
@@ -71,7 +71,7 @@ public class CartDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Failed to retrieve cart: " + e.getMessage());
+            System.out.println(" Failed to retrieve cart: " + e.getMessage());
         }
 
         return items;

@@ -13,11 +13,11 @@ public class UserDAO {
             pstmt.setString(3, password);
 
             pstmt.executeUpdate();
-            System.out.println("✅ User registered: " + username);
+            System.out.println(" User registered: " + username);
             return true;
 
         } catch (SQLException e) {
-            System.out.println("❌ Registration failed: " + e.getMessage());
+            System.out.println(" Registration failed: " + e.getMessage());
             return false;
         }
     }
@@ -33,15 +33,15 @@ public class UserDAO {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                System.out.println("✅ Login successful: " + username);
+                System.out.println(" Login successful: " + username);
                 return true;
             } else {
-                System.out.println("❌ Invalid credentials");
+                System.out.println(" Invalid credentials");
                 return false;
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Login error: " + e.getMessage());
+            System.out.println(" Login error: " + e.getMessage());
             return false;
         }
     }

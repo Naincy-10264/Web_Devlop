@@ -39,11 +39,11 @@ public class ProductDAO {
             pstmt.setString(4, imageUrl);
 
             pstmt.executeUpdate();
-            System.out.println("✅ Product added: " + name);
+            System.out.println(" Product added: " + name);
             return true;
 
         } catch (SQLException e) {
-            System.out.println("❌ Failed to add product: " + e.getMessage());
+            System.out.println("Failed to add product: " + e.getMessage());
             return false;
         }
     }
@@ -69,7 +69,7 @@ public class ProductDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("❌ Error fetching products: " + e.getMessage());
+            System.out.println(" Error fetching products: " + e.getMessage());
         }
 
         return productList;

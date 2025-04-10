@@ -10,11 +10,11 @@ public class DBConnection {
             Class.forName("org.sqlite.JDBC");
             // Connect to SQLite database file
             conn = DriverManager.getConnection("jdbc:sqlite:ecommerce.db");
-            System.out.println("✅ Connected to database successfully!");
+            System.out.println(" Connected to database successfully!");
         } catch (ClassNotFoundException e) {
-            System.out.println("❌ JDBC Driver not found: " + e.getMessage());
+            System.out.println(" JDBC Driver not found: " + e.getMessage());
         } catch (SQLException e) {
-            System.out.println("❌ SQL Error: " + e.getMessage());
+            System.out.println(" SQL Error: " + e.getMessage());
         }
         return conn;
     }
