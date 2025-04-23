@@ -43,15 +43,12 @@
             <version>3.42.0.0</version>
         </dependency>
 
-        <!-- Hibernate Dependencies for JPA -->
+        <!-- Hibernate Core downgraded to support SQLiteDialect -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.6.10.Final</version>
+            <version>5.6.15.Final</version>
         </dependency>
-
-        <!-- Removed SQLite Dialect for Hibernate -->
-        <!-- Removed: org.hibernate.orm:hibernate-community-dialects -->
 
         <!-- Lombok (Optional) -->
         <dependency>
