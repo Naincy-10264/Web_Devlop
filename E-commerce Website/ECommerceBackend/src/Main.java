@@ -11,9 +11,11 @@ public class Main {
         UserDAO.validateLogin("Naincy_Katiyar", "wrongpass");
 
 
-        ProductDAO.addProduct("Smartphone", 19999.99, "Electronics", "images/smartphone.jpg");
-        ProductDAO.addProduct("Jeans", 999.50, "Clothing", "images/jeans.jpg");
+        // ProductDAO.addProduct("Smartphone", 19999.99, "Electronics", "images/smartphone.jpg");
+        // ProductDAO.addProduct("Jeans", 999.50, "Clothing", "images/jeans.jpg");
+        // ProductDAO.addProduct("Trending Jeans", 1999.50, "Clothing", "images/jeans.jpg");
         ProductDAO.addProduct("Trending Jeans", 1999.50, "Clothing", "images/jeans.jpg");
+
 
 
         System.out.println("\n📦 All Products:");
