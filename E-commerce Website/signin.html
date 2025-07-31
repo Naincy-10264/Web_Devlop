@@ -132,31 +132,56 @@
     </div>
 
     <script>
-        // Toggle Password Visibility
-        function togglePassword() {
-            let passwordInput = document.getElementById("password");
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
+    // Toggle Password Visibility
+    function togglePassword() {
+        let passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+    // Form Submission Logic
+    document.getElementById("signinForm").addEventListener("submit", async function(event) {
+        event.preventDefault(); // Prevent form from refreshing
+
+        let email = document.getElementById("email").value.trim();
+        let password = document.getElementById("password").value;
+
+        if (email === "" || password === "") {
+            alert("Please fill in all fields!");
+            return;
         }
 
-        // Form Submission Validation
-        document.getElementById("signinForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent form from refreshing
+        try {
+            const response = await fetch("http://localhost:5000/api/signin", { // Corrected URL
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
 
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
+            const result = await response.json();
 
-            if (email === "" || password === "") {
-                alert("Please fill in all fields!");
-                return;
+            if (response.ok) { // Check for HTTP 2xx status codes (success)
+                alert("Sign-in successful!");
+                // Optional: Save user data or token
+                // localStorage.setItem("token", result.token); // If your backend sends a token
+                // localStorage.setItem("userId", result.user.id);
+                // Redirect to another page, e.g., products.html
+                window.location.href = "products.html";
+            } else {
+                // Handle non-2xx responses (e.g., 401 Unauthorized, 400 Bad Request)
+                alert("Sign-in failed: " + (result.error || "An unknown error occurred."));
             }
-
-            alert("Sign-in successful!");
-        });
-    </script>
+        } catch (error) {
+            console.error("Error during sign-in:", error);
+            alert("Something went wrong. Please try again.");
+        }
+    });
+</script>
 
 </body>
 </html>

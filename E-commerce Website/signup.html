@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <style>
+        /* Existing CSS from your file */
         body {
             min-height: 100vh;
             display: flex;
@@ -66,7 +67,7 @@
         header {
             display: flex;
             align-items: center;
-            gap: 30px; 
+            gap: 30px;
             padding: 15px 50px;
             background: linear-gradient(#0056b3,#96c8c3);
             color: rgb(154, 113, 145);
@@ -76,11 +77,11 @@
             left: 0;
             z-index: 100;
         }
-        
+
         nav {
-            flex-grow: 1; 
+            flex-grow: 1;
         }
-        
+
         nav ul {
             list-style: none;
             display: flex;
@@ -91,15 +92,15 @@
         nav ul li {
             display: inline;
         }
-        
+
         nav ul li a {
             text-decoration: none;
             color: white;
             font-size: 16px;
-            font-weight: bold; 
+            font-weight: bold;
             transition: 0.3s;
         }
-        
+
         nav ul li a:hover {
             color: rgb(36, 118, 146);
         }
@@ -124,7 +125,6 @@
                 <li><a href="./contact.html">Contact</a></li>
             </ul>
         </nav>
-        
     </header>
     <div class="signup-container">
         <form class="signup-form">
@@ -149,5 +149,51 @@
             <button type="submit" class="btn">Sign Up</button>
         </form>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const signupForm = document.querySelector(".signup-form"); // Select the form
+
+        signupForm.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const firstName = document.getElementById("firstName").value.trim();
+            const lastName = document.getElementById("lastName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            // Basic client-side validation for all fields
+            if (!firstName || !lastName || !email || !password) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            // Combine first and last name to create the 'username' field for the backend
+            const username = `${firstName} ${lastName}`;
+
+            try {
+                const response = await fetch("http://localhost:5000/api/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username, email, password }) // Send 'username' as expected by backend
+                });
+
+                const result = await response.json();
+
+                if (response.ok) { // Check if response status is 2xx (successful signup)
+                    alert("Sign-up successful! You can now log in.");
+                    window.location.href = "signin.html"; // Redirect to login page
+                } else {
+                    // Handle non-2xx responses (e.g., 409 Conflict for duplicate email, 400 for bad request)
+                    alert("Sign-up failed: " + (result.error || "An unknown error occurred."));
+                }
+            } catch (error) {
+                console.error("Error during sign-up:", error);
+                alert("Something went wrong during sign-up. Please try again.");
+            }
+        });
+    });
+    </script>
 </body>
 </html>

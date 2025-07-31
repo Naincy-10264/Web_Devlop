@@ -1,19 +1,48 @@
+function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+}
 
-document.addEventListener("DOMContentLoaded", function() {
-    const cart = [];
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("signinForm");
 
-    function updateCart() {
-        console.log("Cart Items:", cart);
-    }
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
 
-    document.querySelectorAll(".buy-btn").forEach(button => {
-        button.addEventListener("click", function() {
-            const productName = this.parentElement.querySelector("h3").innerText;
-            const productPrice = this.parentElement.querySelector("p").innerText;
-            
-            cart.push({ name: productName, price: productPrice });
-            updateCart();
-            alert(productName + " has been added to your cart!");
-        });
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        // Simple validation
+        if (!email || !password) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:3000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert("Sign-in successful!");
+
+                // Optional: Save userId or session (if needed)
+                // localStorage.setItem("userId", result.userId);
+
+                // Optional: Redirect to another page
+                // window.location.href = "dashboard.html";
+            } else {
+                alert("Sign-in failed: " + (result.error || "Invalid credentials."));
+            }
+        } catch (error) {
+            console.error("Error during sign-in:", error);
+            alert("Something went wrong. Please try again.");
+        }
     });
 });
