@@ -110,28 +110,45 @@
 </head>
 <body>
 
-    <div class="signin-container">
-        <h2>Sign In</h2>
-        <form id="signinForm">
-            <div class="input-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email" required>
+<div class="signin-container">
+    <h2>Sign In</h2>
+    <form id="signinForm">
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <span class="toggle-password" onclick="togglePassword()">👁️</span>
             </div>
+        </div>
 
-            <div class="input-group">
-                <label for="password">Password</label>
-                <div class="password-container">
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                    <span class="toggle-password" onclick="togglePassword()">👁️</span>
-                </div>
-            </div>
+        <button type="submit" class="btn">Sign In</button>
+        <p class="signup-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </form>
+</div>
 
-            <button type="submit" class="btn">Sign In</button>
-            <p class="signup-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
-        </form>
-    </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const token = localStorage.getItem('token');
+        const tokenExpiry = localStorage.getItem('tokenExpiry');
 
-    <script>
+        if (token && tokenExpiry) {
+            const currentTime = new Date().getTime();
+            if (currentTime < parseInt(tokenExpiry)) {
+                // If a valid token exists, redirect to products page
+                window.location.href = "products.html";
+            } else {
+                // If the token is expired, clear it
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenExpiry');
+            }
+        }
+    });
+
     // Toggle Password Visibility
     function togglePassword() {
         let passwordInput = document.getElementById("password");
@@ -167,10 +184,12 @@
 
             if (response.ok) { // Check for HTTP 2xx status codes (success)
                 alert("Sign-in successful!");
-                // Optional: Save user data or token
-                // localStorage.setItem("token", result.token); // If your backend sends a token
-                // localStorage.setItem("userId", result.user.id);
-                // Redirect to another page, e.g., products.html
+
+                // Save token and its expiry time
+                localStorage.setItem("token", result.token);
+                localStorage.setItem("tokenExpiry", result.tokenExpiry);
+
+                // Redirect to products page
                 window.location.href = "products.html";
             } else {
                 // Handle non-2xx responses (e.g., 401 Unauthorized, 400 Bad Request)
@@ -182,6 +201,5 @@
         }
     });
 </script>
-
 </body>
 </html>

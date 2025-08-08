@@ -116,58 +116,86 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./products.html">Products</a></li>
-                <li><a href="./about.html">About Us</a></li>
-                <li><a href="./contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="signup-container">
-        <form class="signup-form">
-            <h1>Sign Up</h1>
-            <div class="mb-3">
-                <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
-            </div>
-            <div class="mb-3">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email">
-                <small id="emailHelp" class="form-text">We'll never share your email.</small>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password">
-            </div>
-            <button type="submit" class="btn">Sign Up</button>
-        </form>
-    </div>
-    <script>
+<header>
+    <nav>
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="#" id="products-link">Products</a></li>
+            <li><a href="./about.html">About Us</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="signup-container">
+    <form class="signup-form">
+        <h1>Sign Up</h1>
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter email">
+            <small id="emailHelp" class="form-text">We'll never share your email.</small>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn">Sign Up</button>
+    </form>
+</div>
+<script>
     document.addEventListener("DOMContentLoaded", function () {
-        const signupForm = document.querySelector(".signup-form"); // Select the form
+        const signupForm = document.querySelector(".signup-form");
+        const productsLink = document.getElementById("products-link");
+
+        // Check for an existing token on page load
+        const token = localStorage.getItem("token");
+        if (token) {
+            // Check if the token is still valid (e.g., not expired)
+            const tokenExpiry = localStorage.getItem("tokenExpiry");
+            const currentTime = new Date().getTime();
+
+            // If the token is valid, set the products link
+            if (tokenExpiry && currentTime < tokenExpiry) {
+                productsLink.href = "./products.html";
+            } else {
+                // If the token is expired, clear it and force re-login
+                localStorage.removeItem("token");
+                localStorage.removeItem("tokenExpiry");
+                productsLink.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    alert("Please sign in to view products.");
+                    window.location.href = "./signin.html";
+                });
+            }
+        } else {
+            // No token found, prevent access
+            productsLink.addEventListener("click", (e) => {
+                e.preventDefault();
+                alert("Please sign in to view products.");
+                window.location.href = "./signin.html";
+            });
+        }
 
         signupForm.addEventListener("submit", async function (event) {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault();
 
             const firstName = document.getElementById("firstName").value.trim();
             const lastName = document.getElementById("lastName").value.trim();
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value;
 
-            // Basic client-side validation for all fields
             if (!firstName || !lastName || !email || !password) {
                 alert("Please fill in all fields!");
                 return;
             }
 
-            // Combine first and last name to create the 'username' field for the backend
             const username = `${firstName} ${lastName}`;
 
             try {
@@ -176,16 +204,16 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ username, email, password }) // Send 'username' as expected by backend
+                    body: JSON.stringify({ username, email, password })
                 });
 
                 const result = await response.json();
 
-                if (response.ok) { // Check if response status is 2xx (successful signup)
+                if (response.ok) {
                     alert("Sign-up successful! You can now log in.");
-                    window.location.href = "signin.html"; // Redirect to login page
+                    // After successful signup, redirect to signin.html
+                    window.location.href = "signin.html";
                 } else {
-                    // Handle non-2xx responses (e.g., 409 Conflict for duplicate email, 400 for bad request)
                     alert("Sign-up failed: " + (result.error || "An unknown error occurred."));
                 }
             } catch (error) {
@@ -194,6 +222,6 @@
             }
         });
     });
-    </script>
+</script>
 </body>
 </html>

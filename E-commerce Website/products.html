@@ -4,11 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clothing Store - Product & Cart</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #ffe6e6;
+            margin-top: 80px; /* Added margin for fixed header */
+        }
+        .navbar {
+            background: linear-gradient(135deg, #0056b3, #96c8c3);
+            padding: 15px 50px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+        }
+        .navbar nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .navbar nav ul li a:hover {
+            color: rgb(36, 118, 146);
         }
         .product-card {
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -45,102 +81,160 @@
     </style>
 </head>
 <body>
-    <div class="container mx-auto py-12 text-center">
-        <h2 class="text-4xl font-bold mb-4 text-red-600">A complete blend </h2>
+<header class="navbar">
+    <h1>ANUFA</h1>
+    <nav>
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./products.html">Products</a></li>
+            <li><a href="./about.html">About Us</a></li>
+            <li><a href="./contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
 
-        <!-- 🔍 Search Bar -->
-        <input type="text" id="searchInput" class="search-bar" placeholder="Search for a product..." onkeyup="filterProducts()">
+<div class="container mx-auto py-12 text-center">
+    <h2 class="text-4xl font-bold mb-4 text-red-600">A complete blend </h2>
 
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4 mt-6">
-            <!-- Product Cards Will Be Inserted Here -->
-        </div>
+    <input type="text" id="searchInput" class="search-bar" placeholder="Search for a product..." onkeyup="filterProducts()">
+
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4 mt-6">
     </div>
+</div>
 
-    <!-- 🛒 Shopping Cart Section -->
-    <div class="container mx-auto py-12">
-        <h2 class="text-3xl font-bold mb-4 text-red-600 text-center">🛒 Your Shopping Cart</h2>
-        <div id="cart" class="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
-            <ul id="cartItems" class="mb-4"></ul>
-            <p class="text-xl font-bold text-gray-800">Total: <span id="cartTotal">₹0.00</span></p>
-            <button onclick="clearCart()" class="mt-4 bg-red-500 text-white px-6 py-2 rounded-lg">Clear Cart</button>
-        </div>
+<div class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold mb-4 text-red-600 text-center">🛒 Your Shopping Cart</h2>
+    <div id="cart" class="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
+        <ul id="cartItems" class="mb-4"></ul>
+        <p class="text-xl font-bold text-gray-800">Total: <span id="cartTotal">₹0.00</span></p>
+        <button onclick="clearCart()" class="mt-4 bg-red-500 text-white px-6 py-2 rounded-lg">Clear Cart</button>
+        <button onclick="checkout()" class="mt-4 bg-green-500 text-white px-6 py-2 rounded-lg ml-4">Proceed to Checkout</button>
     </div>
+</div>
 
-    <script>
-        const products = [
-            { name: "Stylish Jacket", price: "&#8377 4900.99", image: "images/shoppinga.webp" },
-            { name: "Casual T-Shirt", price: "&#8377 1900.99", image: "images/shoppingb.jpg" },
-            { name: "Denim Jeans", price: "&#8377 3900.99", image: "images/shoppingb.jpg" },
-            { name: "Hoodie", price: "&#8377 2900.99", image: "images/shoppingb.jpg" },
-            { name: "Summer Dress", price: "&#8377 3400.99", image: "images/shoppingb.jpg" },
-            { name: "Leather Jacket", price: "&#8377 5900.99", image: "images/shoppingb.jpg" },
-            { name: "Formal Shirt", price: "&#8377 2400.99", image: "images/shoppingb.jpg" },
-            { name: "Sneakers", price: "&#8377 4400.99", image: "images/shoppingb.jpg" }
-        ];
+<script>
+    // Check for login status and redirect if no valid token
+    document.addEventListener("DOMContentLoaded", function() {
+        const token = localStorage.getItem('token');
+        const tokenExpiry = localStorage.getItem('tokenExpiry');
 
-        let cart = [];
+        if (!token || !tokenExpiry || new Date().getTime() > parseInt(tokenExpiry)) {
+            alert("Please sign in to view products.");
+            window.location.href = "signin.html";
+        }
+        fetchProducts();
+    });
 
-        function displayProducts(productList) {
-            const productGrid = document.getElementById("productGrid");
-            productGrid.innerHTML = "";
+    let products = [];
+    let cart = [];
 
-            productList.forEach((product, index) => {
-                const productCard = `
-                    <div class="product-card shadow-lg p-6 text-center">
-                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-60 object-cover rounded-lg">
-                        <h3 class="text-xl font-semibold mt-4 text-gray-800">${product.name}</h3>
-                        <p class="text-2xl font-bold text-red-500 mt-2">${product.price}</p>
-                        <button onclick="addToCart(${index})" class="mt-4 w-full text-white py-3 rounded-lg buy-btn">Add to Cart</button>
-                    </div>
-                `;
-                productGrid.innerHTML += productCard;
+    async function fetchProducts() {
+        try {
+            const response = await fetch("http://localhost:5000/api/products");
+            const fetchedProducts = await response.json();
+            products = fetchedProducts;
+            displayProducts(products);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            document.getElementById("productGrid").innerHTML = "<p>Failed to load products. Please try again later.</p>";
+        }
+    }
+
+    function displayProducts(productList) {
+        const productGrid = document.getElementById("productGrid");
+        productGrid.innerHTML = "";
+
+        productList.forEach((product, index) => {
+            const productCard = `
+                <div class="product-card shadow-lg p-6 text-center">
+                    <img src="${product.image}" alt="${product.name}" class="product-image w-full h-60 object-cover rounded-lg">
+                    <h3 class="text-xl font-semibold mt-4 text-gray-800">${product.name}</h3>
+                    <p class="text-2xl font-bold text-red-500 mt-2">₹${product.price}</p>
+                    <button onclick="addToCart(${index})" class="mt-4 w-full text-white py-3 rounded-lg buy-btn">Add to Cart</button>
+                </div>
+            `;
+            productGrid.innerHTML += productCard;
+        });
+    }
+
+    function addToCart(index) {
+        const product = products[index];
+        cart.push(product);
+        updateCart();
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById("cartItems");
+        const cartTotal = document.getElementById("cartTotal");
+        cartItems.innerHTML = "";
+        let total = 0;
+
+        cart.forEach((product, index) => {
+            total += parseFloat(product.price);
+            cartItems.innerHTML += `
+                <li class="flex justify-between items-center py-2 border-b">
+                    <span>${product.name} - <strong>₹${product.price}</strong></span>
+                    <button onclick="removeFromCart(${index})" class="bg-red-500 text-white px-3 py-1 rounded">Remove</button>
+                </li>`;
+        });
+
+        cartTotal.innerText = `₹${total.toFixed(2)}`;
+    }
+
+    function clearCart() {
+        cart = [];
+        updateCart();
+    }
+
+    function filterProducts() {
+        const searchInput = document.getElementById("searchInput").value.toLowerCase();
+        const filteredProducts = products.filter(product =>
+            product.name.toLowerCase().includes(searchInput)
+        );
+        displayProducts(filteredProducts);
+    }
+
+    async function checkout() {
+        if (cart.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert("Please sign in to complete your purchase.");
+            window.location.href = "signin.html";
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost:5000/api/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ cart: cart })
             });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message);
+                clearCart();
+            } else {
+                alert("Checkout failed: " + (result.error || "An unknown error occurred."));
+            }
+        } catch (error) {
+            console.error("Error during checkout:", error);
+            alert("Something went wrong with the checkout process.");
         }
-
-        function addToCart(index) {
-            const product = products[index];
-            cart.push(product);
-            updateCart();
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartItems = document.getElementById("cartItems");
-            const cartTotal = document.getElementById("cartTotal");
-            cartItems.innerHTML = "";
-            let total = 0;
-
-            cart.forEach((product, index) => {
-                total += parseFloat(product.price.replace("&#8377", ""));
-                cartItems.innerHTML += `
-                    <li class="flex justify-between items-center py-2 border-b">
-                        <span>${product.name} - <strong>${product.price}</strong></span>
-                        <button onclick="removeFromCart(${index})" class="bg-red-500 text-white px-3 py-1 rounded">Remove</button>
-                    </li>`;
-            });
-
-            cartTotal.innerText = `₹${total.toFixed(2)}`;
-
-        }
-
-        function clearCart() {
-            cart = [];
-            updateCart();
-        }
-
-        function filterProducts() {
-            const searchInput = document.getElementById("searchInput").value.toLowerCase();
-            const filteredProducts = products.filter(product =>
-                product.name.toLowerCase().includes(searchInput)
-            );
-            displayProducts(filteredProducts);
-        }
-
-        displayProducts(products);
-    </script>
+    }
+</script>
 </body>
 </html>
